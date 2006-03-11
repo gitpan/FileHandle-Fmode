@@ -1,0 +1,7 @@
+MANIFEST
+README
+CHANGES
+Makefile.PL
+Fmode.pm
+Fmode.xs
+t/t_1.t
