@@ -1,10 +1,10 @@
-use warnings;
 use strict;
 use FileHandle::Fmode qw(:all);
+use File::Spec;
 
-print "1..24\n";
+print "1..28\n";
 
-my ($rd, $wr, $rw);
+my ($rd, $wr, $rw, $invalid, $one, $undef);
 
 open(RD, "Makefile.PL") or die "Can't open makefile.PL for reading: $!";
 open($rd, "Fmode.pm") or die "Can't open Fmode.pm for reading: $!";
@@ -122,4 +122,26 @@ else {print "not ok 24\n"}
 
 close(RW) or die "Can't close temp.txt after opening for reading/writing: $!";
 close($rw) or die "Can't close temp2.txt after opening for reading/writing: $!";
+
+open($invalid, "non_existent.txt");
+open(INV, "non_existent_file.txt");
+
+# Hide the warnings that the following tests generate.
+my $null = File::Spec->devnull;
+open(STDERR, ">$null"); 
+
+if(is_R($invalid) || is_W($invalid) || is_RO($invalid) || is_WO($invalid) || is_RW($invalid)) {print "not ok 25\n"}
+else {print "ok 25\n"}
+
+if(is_R(\*INV) || is_W(\*INV) || is_RO(\*INV) || is_WO(\*INV) || is_RW(\*INV)) {print "not ok 26\n"}
+else {print "ok 26\n"}
+
+$one = 1;
+
+if(is_R($one) || is_W($one) || is_RO($one) || is_WO($one) || is_RW($one)) {print "not ok 27\n"}
+else {print "ok 27\n"}
+
+eval {if(is_R($undef)){};}; 
+if($@){print "ok 28\n"}
+else {print "not ok 28\n"}
 
