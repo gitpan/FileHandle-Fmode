@@ -1,1 +1,10 @@
+0.03 - Rewrite the existing functions so that they die if:
+       1) the received  argument is not an open filehandle;
+       or
+       2) the received argument is a filehandle connected to a memory object.
+
+     - Add the is_arg_ok() function. 
+
+0.02 - Minor changes for compatibility with pre-5.6 versions of perl, and some tidying up.
+
 0.01 - ummm ....

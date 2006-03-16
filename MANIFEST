@@ -4,4 +4,5 @@ CHANGES
 Makefile.PL
 Fmode.pm
 Fmode.xs
-t/t_1.t
+t/basic.t
+t/binmode.t
