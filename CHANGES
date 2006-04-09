@@ -1,3 +1,5 @@
+0.04 - Can now handle filehandles connected to memory objects.
+
 0.03 - Rewrite the existing functions so that they die if:
        1) the received  argument is not an open filehandle;
        or

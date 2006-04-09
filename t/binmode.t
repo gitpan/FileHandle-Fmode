@@ -4,9 +4,9 @@ use FileHandle::Fmode qw(:all);
 # Same tests as basic.t - except here we binmode() the handles to check
 # that makes no difference ... no reason that it should, of course ...
 
-print "1..39\n";
+print "1..43\n";
 
-my ($rd, $wr, $rw, $invalid, $one, $undef, $null, $mem, $var);
+my ($rd, $wr, $rw, $one, $undef, $null, $mem, $var);
 
 open(RD, "Makefile.PL") or die "Can't open makefile.PL for reading: $!";
 open($rd, "Fmode.pm") or die "Can't open Fmode.pm for reading: $!";
@@ -14,17 +14,29 @@ open($rd, "Fmode.pm") or die "Can't open Fmode.pm for reading: $!";
 binmode(RD);
 binmode($rd);
 
-if(is_arg_ok(\*RD) && is_R(\*RD) && is_RO(\*RD)) {print "ok 1\n"}
+if(is_arg_ok(\*RD) && is_R(\*RD) && is_RO(\*RD) && !is_W(\*RD) && !is_WO(\*RD) && !is_RW(\*RD)) {print "ok 1\n"}
 else {print "not ok 1\n"}
 
-if(is_arg_ok($rd) && is_R($rd) && is_RO($rd)) {print "ok 2\n"}
+if(is_arg_ok($rd) && is_R($rd) && is_RO($rd) && !is_W($rd) && !is_WO($rd) && !is_RW($rd)) {print "ok 2\n"}
 else {print "not ok 2\n"}
 
-if(!is_W(\*RD) && !is_WO(\*RD) && !is_RW(\*RD)) {print "ok 3\n"}
+close(RD) or die "Can't close Makefile.PL after opening for reading: $!";
+close($rd) or die "Can't close Fmode.pm after opening for reading: $!";
+
+open(RD, "<Makefile.PL") or die "Can't open makefile.PL for reading: $!";
+open($rd, "<Fmode.pm") or die "Can't open Fmode.pm for reading: $!";
+
+binmode(RD);
+binmode($rd);
+
+if(is_arg_ok(\*RD) && is_R(\*RD) && is_RO(\*RD) && !is_W(\*RD) && !is_WO(\*RD) && !is_RW(\*RD)) {print "ok 3\n"}
 else {print "not ok 3\n"}
 
-if(!is_W($rd) && !is_WO($rd) && !is_RW($rd)) {print "ok 4\n"}
+if(is_arg_ok($rd) && is_R($rd) && is_RO($rd) && !is_W($rd) && !is_WO($rd) && !is_RW($rd)) {print "ok 4\n"}
 else {print "not ok 4\n"}
+
+close(RD) or die "Can't close Makefile.PL after opening for reading: $!";
+close($rd) or die "Can't close Fmode.pm after opening for reading: $!";
 
 #####################################################
 
@@ -48,8 +60,6 @@ else {print "not ok 8\n"}
 
 #####################################################
 
-close(RD) or die "Can't close Makefile.PL after opening for reading: $!";
-close($rd) or die "Can't close Fmode.pm after opening for reading: $!";
 close(WR) or die "Can't close temp.txt after opening for writing: $!";
 close($wr) or die "Can't close temp2.txt after opening for writing: $!";
 
@@ -143,10 +153,6 @@ else {print "not ok 24\n"}
 close(RW) or die "Can't close temp.txt after opening for reading/writing: $!";
 close($rw) or die "Can't close temp2.txt after opening for reading/writing: $!";
 
-open($invalid, "non_existent.txt");
-
-binmode($invalid);
-
 eval {is_R($undef)}; 
 if($@ && !is_arg_ok($undef)){print "ok 25\n"}
 else {print "not ok 25\n"}
@@ -189,36 +195,94 @@ eval {is_RW($one)};
 if($@){print "ok 34\n"}
 else {print "not ok 34\n"}
 
-if($] >= 5.008) {
-  open $mem, '>', \$var;
+if($] >= 5.007) {
 
-  binmode($mem); # issues a warning: "binmode() on closed filehandle....."
+  $var = ''; # Avoid "uninitialised" warnings.
 
-  eval {is_R($mem)}; 
-  if($@ && !is_arg_ok($mem)){print "ok 35\n"}
+  open($mem, '<', \$var) or die "Can't open memory object: $!";
+  binmode($mem);
+  if(is_arg_ok($mem) && is_R($mem) && is_RO($mem) && !is_W($mem) && !is_WO($mem) && !is_RW($mem)) {print "ok 35\n"}
   else {print "not ok 35\n"}
+  close($mem) or die "Can't close memory object: $!";
 
-  eval {is_RO($mem)}; 
-  if($@){print "ok 36\n"}
+  open($mem, '>', \$var) or die "Can't open memory object: $!";
+  binmode($mem);
+  if(is_arg_ok($mem) && !is_R($mem) && !is_RO($mem) && is_W($mem) && is_WO($mem) && !is_RW($mem)) {print "ok 36\n"}
   else {print "not ok 36\n"}
+  close($mem) or die "Can't close memory object: $!";
 
-  eval {is_W($mem)}; 
-  if($@){print "ok 37\n"}
+  open($mem, '>>', \$var) or die "Can't open memory object: $!";
+  binmode($mem);
+  if(is_arg_ok($mem) && !is_R($mem) && !is_RO($mem) && is_W($mem) && is_WO($mem) && !is_RW($mem)) {print "ok 37\n"}
   else {print "not ok 37\n"}
+  close($mem) or die "Can't close memory object: $!";
 
-  eval {is_WO($mem)}; 
-  if($@){print "ok 38\n"}
+  open($mem, '+>>', \$var) or die "Can't open memory object: $!";
+  binmode($mem);
+  if(is_arg_ok($mem) && is_R($mem) && !is_RO($mem) && is_W($mem) && !is_WO($mem) && is_RW($mem)) {print "ok 38\n"}
   else {print "not ok 38\n"}
+  close($mem) or die "Can't close memory object: $!";
 
-  eval {is_RW($mem)}; 
-  if($@){print "ok 39\n"}
+
+  open($mem, '+>', \$var) or die "Can't open memory object: $!";
+  binmode($mem);
+  if(is_arg_ok($mem) && is_R($mem) && !is_RO($mem) && is_W($mem) && !is_WO($mem) && is_RW($mem)) {print "ok 39\n"}
   else {print "not ok 39\n"}
+  close($mem) or die "Can't close memory object: $!";
+
+  open($mem, '+<', \$var) or die "Can't open memory object: $!";
+  binmode($mem);
+  if(is_arg_ok($mem) && is_R($mem) && !is_RO($mem) && is_W($mem) && !is_WO($mem) && is_RW($mem)) {print "ok 40\n"}
+  else {print "not ok 40\n"}
+  close($mem) or die "Can't close memory object: $!";
+
 }
 else {
-  print "ok 35 - skipped - not perl 5.8\n";
-  print "ok 36 - skipped - not perl 5.8\n";
-  print "ok 37 - skipped - not perl 5.8\n";
-  print "ok 38 - skipped - not perl 5.8\n";
-  print "ok 39 - skipped - not perl 5.8\n";
+  print "ok 35 - skipped - old perl\n";
+  print "ok 36 - skipped - old perl\n";
+  print "ok 37 - skipped - old perl\n";
+  print "ok 38 - skipped - old perl\n";
+  print "ok 39 - skipped - old perl\n";
+  print "ok 40 - skipped - old perl\n";
 }
+
+open($rd, "Makefile.PL") or die "Can't open Makefile.PL for reading: $!";
+binmode($rd);
+eval{FileHandle::Fmode::perliol_readable($rd);};
+
+if($] < 5.007) {
+  if($@ =~ /perliol_readable/) {print "ok 41\n"}
+  else {print "not ok 41\n"} 
+}
+else {
+  if($@) {print "not ok 41\n"}
+  else {print "ok 41\n"}
+}
+
+close($rd) or die "Can't close Makefile.PL after opening for reading: $!";
+
+open($wr, ">temp2.txt") or die "Can't open temp2.txt for writing: $!";
+binmode($wr);
+eval{FileHandle::Fmode::perliol_writable($wr);};
+
+if($] < 5.007) {
+  if($@ =~ /perliol_writable/) {print "ok 42\n"}
+  else {print "not ok 42\n"} 
+}
+else {
+  if($@) {print "not ok 42\n"}
+  else {print "ok 42\n"}
+}
+
+eval{FileHandle::Fmode::win32_fmode($wr);};
+if($^O =~ /mswin32/i) {
+  if($@) {print "not ok 43\n"}
+  else {print "ok 43\n"}
+}
+else {
+  if($@ =~ /win32_fmode/) {print "ok 43\n"}
+  else {print "not ok 43\n"}
+}
+
+close($wr) or die "Can't close temp2.txt after opening for writing: $!";
 
