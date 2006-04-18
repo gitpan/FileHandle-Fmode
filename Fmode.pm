@@ -1,11 +1,11 @@
 package FileHandle::Fmode;
-use Fcntl qw(O_RDONLY O_WRONLY O_RDWR F_GETFL);
+use Fcntl qw(O_WRONLY O_RDWR F_GETFL);
 use strict;
 
 require Exporter;
 require DynaLoader;
 
-$FileHandle::Fmode::VERSION = 0.04;
+$FileHandle::Fmode::VERSION = 0.05;
 
 @FileHandle::Fmode::ISA = qw(Exporter DynaLoader);
 
@@ -52,7 +52,7 @@ sub unix_readable_only {
       return 0;
     }
     my $fmode = fcntl($_[0], F_GETFL, my $slush = 0);
-    if(defined($fmode) && $fmode == O_RDONLY) {return 1}
+    if(defined($fmode) && !($fmode & O_WRONLY) && !($fmode & O_RDWR)) {return 1}
     return 0;
 }
 
@@ -88,7 +88,7 @@ sub unix_readable {
       return 0;
     }
     my $fmode = fcntl($_[0], F_GETFL, my $slush = 0);
-    if(defined($fmode) && ($fmode == O_RDONLY || $fmode & O_RDWR)) {return 1}
+    if(defined($fmode) && !($fmode & O_WRONLY)) {return 1}
     return 0;
 }
 
@@ -228,11 +228,14 @@ FileHandle::Fmode - determine whether a filehandle is opened for reading, writin
  code (including XS code) provided by BrowserUK. Zaxo presented the idea 
  of using fcntl() in an earlier PerlMonks thread.
 
- Thanks also to dragonchild and BrowserUK for steering this module in
+ Thanks to dragonchild and BrowserUK for steering this module in
  the right direction.
 
- Also thanks to attn.steven.kuo for directing me to the perliol routines
+ Thanks to attn.steven.kuo for directing me to the perliol routines
  that enable us to query filehandles attached to memory objects.
+
+ And thanks to Jost Krieger for helping to sort out the test failures that
+ were occurring on Solaris (and some other operating systems too).
  
 
 =head1 LICENSE

@@ -1,3 +1,6 @@
+0.05 - (Hopefully) fix problems with Solaris and some other operating
+       systems re testing for readability.
+
 0.04 - Can now handle filehandles connected to memory objects.
 
 0.03 - Rewrite the existing functions so that they die if:
