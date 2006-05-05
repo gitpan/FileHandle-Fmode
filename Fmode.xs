@@ -23,7 +23,7 @@ SV * win32_fmode( FILE *stream ) {
 
 #endif
 
-#ifdef PERL58
+#ifdef PERL580_OR_LATER
 
 /*
  * XS code to deal with filehandles
@@ -73,6 +73,23 @@ SV * perliol_writable( SV * handle ) {
 
 #endif
 
+#ifdef PERL560_OR_LATER
+
+SV * is_appendable(SV * handle) {
+     IO *io;
+     io = sv_2io(handle);
+     if (IoTYPE(io) == IoTYPE_APPEND) return newSVuv(1);
+     return newSVuv(0);
+}
+
+#else
+
+SV * is_appendable(SV * handle){
+     croak("is_appendable() function implemented only with perl 5.6 or later");
+}
+
+#endif
+
 MODULE = FileHandle::Fmode	PACKAGE = FileHandle::Fmode
 
 PROTOTYPES: DISABLE
@@ -88,4 +105,9 @@ perliol_readable (handle)
 SV *
 perliol_writable (handle)
 	SV *handle 
+
+SV *
+is_appendable (handle)
+	SV *handle 
+
 

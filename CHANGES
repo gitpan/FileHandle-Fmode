@@ -1,3 +1,6 @@
+0.08 - Add is_A() function.
+       Rewrite internal functions to reduce (but not completely eradicate) repetition.
+
 0.05 - (Hopefully) fix problems with Solaris and some other operating
        systems re testing for readability.
 
