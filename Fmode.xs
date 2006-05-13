@@ -12,7 +12,7 @@
 */
 
 SV * win32_fmode( FILE *stream ) {
-    return newSVuv(stream->_flag);
+    return newSViv(stream->_flag);
 }
 
 #else
@@ -73,7 +73,7 @@ SV * perliol_writable( SV * handle ) {
 
 #endif
 
-#ifdef PERL560_OR_LATER
+#ifdef PERL561_OR_LATER
 
 SV * is_appendable(SV * handle) {
      IO *io;

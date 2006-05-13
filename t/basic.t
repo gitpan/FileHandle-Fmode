@@ -5,7 +5,7 @@ use FileHandle::Fmode qw(:all);
 
 print "1..52\n";
 
-my $no_skip = ($] < 5.006 && $^O =~ /mswin32/i) ? 0 : 1;
+my $no_skip = ($] < 5.006001 && $^O =~ /mswin32/i) ? 0 : 1;
 
 my ($rd, $wr, $rw, $one, $undef, $null, $mem, $var);
 
@@ -25,7 +25,7 @@ if($no_skip) {
   if(!is_A(\*RD) && !is_A($rd)) {print "ok 3\n"}
   else {print "not ok 3\n"}
 }
-else {print "ok 3 - skipped, pre-5.6 Win32 perl\n"}
+else {print "ok 3 - skipped, pre-5.6.1 Win32 perl\n"}
 
 close(RD) or die "Can't close Makefile.PL after opening for reading: $!";
 close($rd) or die "Can't close Fmode.pm after opening for reading: $!";
@@ -46,7 +46,7 @@ if($no_skip) {
   if(!is_A(\*RD) && !is_A($rd)) {print "ok 6\n"}
   else {print "not ok 6\n"}
 }
-else {print "ok 6 - skipped, pre-5.6 Win32 perl\n"}
+else {print "ok 6 - skipped, pre-5.6.1 Win32 perl\n"}
 
 close(RD) or die "Can't close Makefile.PL after opening for reading: $!";
 close($rd) or die "Can't close Fmode.pm after opening for reading: $!";
@@ -75,7 +75,7 @@ if($no_skip) {
   if(!is_A(\*WR) && !is_A($wr)) {print "ok 11\n"}
   else {print "not ok 11\n"}
 }
-else {print "ok 11 - skipped, pre-5.6 Win32 perl\n"}
+else {print "ok 11 - skipped, pre-5.6.1 Win32 perl\n"}
 
 #####################################################
 
@@ -104,7 +104,7 @@ if($no_skip) {
   if(is_A(\*WR) && is_A($wr)) {print "ok 16\n"}
   else {print "not ok 16\n"}
 }
-else {print "ok 16 - skipped, pre-5.6 Win32 perl\n"}
+else {print "ok 16 - skipped, pre-5.6.1 Win32 perl\n"}
 
 close(WR) or die "Can't close temp.txt after opening for appending: $!";
 close($wr) or die "Can't close temp2.txt after opening for appending: $!";
@@ -133,7 +133,7 @@ if($no_skip) {
   if(!is_A(\*RW) && !is_A($rw)) {print "ok 21\n"}
   else {print "not ok 21\n"}
 }
-else {print "ok 21 - skipped, pre-5.6 Win32 perl\n"}
+else {print "ok 21 - skipped, pre-5.6.1 Win32 perl\n"}
 
 close(RW) or die "Can't close temp.txt after opening for reading/writing: $!";
 close($rw) or die "Can't close temp2.txt after opening for reading/writing: $!";
@@ -162,7 +162,7 @@ if($no_skip) {
   if(!is_A(\*RW) && !is_A($rw)) {print "ok 26\n"}
   else {print "not ok 26\n"}
 }
-else {print "ok 26 - skipped, pre-5.6 Win32 perl\n"}
+else {print "ok 26 - skipped, pre-5.6.1 Win32 perl\n"}
 
 close(RW) or die "Can't close temp.txt after opening for reading/writing: $!";
 close($rw) or die "Can't close temp2.txt after opening for reading/writing: $!";
@@ -191,7 +191,7 @@ if($no_skip) {
   if(is_A(\*RW) && is_A($rw)) {print "ok 31\n"}
   else {print "not ok 31\n"}
 }
-else {print "ok 31 - skipped, pre-5.6 Win32 perl\n"}
+else {print "ok 31 - skipped, pre-5.6.1 Win32 perl\n"}
 
 close(RW) or die "Can't close temp.txt after opening for reading/writing: $!";
 close($rw) or die "Can't close temp2.txt after opening for reading/writing: $!";
@@ -221,7 +221,7 @@ if($no_skip){
   if($@){print "ok 37\n"}
   else {print "not ok 37\n"}
 }
-else {print "ok 37 - skipped, pre-5.6 Win32 perl\n"}
+else {print "ok 37 - skipped, pre-5.6.1 Win32 perl\n"}
 
 $one = 1;
 
@@ -250,7 +250,7 @@ if($no_skip){
   if($@){print "ok 43\n"}
   else {print "not ok 43\n"}
 }
-else {print "ok 43 - skipped, pre-5.6 Win32 perl\n"}
+else {print "ok 43 - skipped, pre-5.6.1 Win32 perl\n"}
 
 if($] >= 5.007) {
 

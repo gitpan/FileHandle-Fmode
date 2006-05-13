@@ -1,3 +1,5 @@
+0.09 - Correct error that prevents the module from building on perl 5.6.0.
+
 0.08 - Add is_A() function.
        Rewrite internal functions to reduce (but not completely eradicate) repetition.
 

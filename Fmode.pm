@@ -5,7 +5,7 @@ use strict;
 require Exporter;
 require DynaLoader;
 
-$FileHandle::Fmode::VERSION = 0.08;
+$FileHandle::Fmode::VERSION = 0.09;
 
 @FileHandle::Fmode::ISA = qw(Exporter DynaLoader);
 
@@ -95,7 +95,7 @@ sub is_A {
       return is_appendable($_[0]);
     }
     if($is_win32) {
-      if($] < 5.006) {die "is_A not currently implemented on Win32 for pre-5.6 perl"}
+      if($] < 5.006001) {die "is_A not currently implemented on Win32 for pre-5.6.1 perl"}
       return is_appendable($_[0]);
     }
     my $fmode = fcntl($_[0], F_GETFL, my $slush = 0);
@@ -166,7 +166,7 @@ FileHandle::Fmode - determine whether a filehandle is opened for reading, writin
 
   Returns true if the filehandle was opened for appending.
   Else returns false.
-  Not currently implemented on Win32 with pre-5.6 versions of perl (and  
+  Not currently implemented on Win32 with pre-5.6.1 versions of perl (and  
   dies with appropriate error message if called on such a platform).
 
 
@@ -190,8 +190,8 @@ FileHandle::Fmode - determine whether a filehandle is opened for reading, writin
 
 =head1 TODO
 
- I don't know that anyone still runs pre-5.6 perl on Win32. However, if
- someone likes to tell me how is_A() could be made to work on pre-5.6
+ I don't know that anyone still runs pre-5.6.1 perl on Win32. However, if
+ someone likes to tell me how is_A() could be made to work on pre-5.6.1
  Win32 perl, I would be quite happy to implement it.
 
 
