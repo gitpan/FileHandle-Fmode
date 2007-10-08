@@ -5,21 +5,24 @@ use strict;
 require Exporter;
 require DynaLoader;
 
-$FileHandle::Fmode::VERSION = 0.09;
+*is_FH = \&is_arg_ok;
+
+$FileHandle::Fmode::VERSION = 0.10;
 
 @FileHandle::Fmode::ISA = qw(Exporter DynaLoader);
 
-@FileHandle::Fmode::EXPORT_OK = qw(is_R is_W is_RO is_WO is_RW is_arg_ok is_A);
+@FileHandle::Fmode::EXPORT_OK = qw(is_R is_W is_RO is_WO is_RW is_arg_ok is_A is_FH);
 
 %FileHandle::Fmode::EXPORT_TAGS = (all => [qw
-    (is_R is_W is_RO is_WO is_RW is_arg_ok is_A)]);
+    (is_R is_W is_RO is_WO is_RW is_arg_ok is_A is_FH)]);
 
 bootstrap FileHandle::Fmode $FileHandle::Fmode::VERSION;
 
 my $is_win32 = $^O =~ /mswin32/i ? 1 : 0;
 
 sub is_arg_ok {
-    if(!defined($_[0])) {return 0} # will throw an exception if passed to fileno()
+    eval{$_ = fileno($_[0]);};
+    if($@) {return 0}
     if(defined(fileno($_[0]))) {
       if(fileno($_[0]) == -1) {
         if($] < 5.007) {return 0}
@@ -124,6 +127,12 @@ FileHandle::Fmode - determine whether a filehandle is opened for reading, writin
 
 =head1 FUNCTIONS
 
+ $bool = is_FH($fh);
+ $bool = is_FH(\*FH);
+  This is just a (more intuitively named) alias for is_arg_ok().
+  Returns 1 if its argument is an open filehandle.
+  Returns 0 if its argument is something other than an open filehandle.
+
  $bool = is_arg_ok($fh);
  $bool = is_arg_ok(\*FH);
   Returns 1 if its argument is an open filehandle.
@@ -133,7 +142,7 @@ FileHandle::Fmode - determine whether a filehandle is opened for reading, writin
  any of those functions receive an argument that is not an open 
  filehandle then the function dies with an appropriate error message.
  To ensure that your script won't suffer such a death, you could first
- check by passing the argument to is_arg_ok(). Or you could wrap the
+ check by passing the argument to is_FH(). Or you could wrap the
  function call in an eval{} block. 
 
  $bool = is_R($fh);
@@ -204,6 +213,6 @@ FileHandle::Fmode - determine whether a filehandle is opened for reading, writin
 =head1 AUTHOR
 
 
- Sisyphus <kalinabears at iinet dot net dot au>
+ Sisyphus <sisyphus at cpan dot org>
 
 =cut

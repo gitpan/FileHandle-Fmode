@@ -85,7 +85,7 @@ SV * is_appendable(SV * handle) {
 #else
 
 SV * is_appendable(SV * handle){
-     croak("is_appendable() function implemented only with perl 5.6 or later");
+     croak("is_appendable() function implemented only with perl 5.6.1 or later");
 }
 
 #endif

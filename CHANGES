@@ -1,3 +1,7 @@
+0.10 - Add is_FH() - which is just a (more intuitively named) alias for
+       is_arg_ok().
+       Various minor adjustments to enable trouble-free building on pre-5.6.
+
 0.09 - Correct error that prevents the module from building on perl 5.6.0.
 
 0.08 - Add is_A() function.
