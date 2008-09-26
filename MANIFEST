@@ -6,3 +6,4 @@ Fmode.pm
 Fmode.xs
 t/basic.t
 t/binmode.t
+t/pod.t

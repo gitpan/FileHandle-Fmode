@@ -41,7 +41,7 @@ SV * perliol_readable(SV * handle) {
      io = sv_2io(handle);
      f  = IoIFP(io);
      if(PerlIOValid(f)){
-       const IV flags = PerlIOBase(f)->flags;
+       flags = PerlIOBase(f)->flags;
        if(flags & PERLIO_F_CANREAD) return newSVuv(1);
        return newSVuv(0);
      }

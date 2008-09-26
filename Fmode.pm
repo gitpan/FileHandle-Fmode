@@ -7,7 +7,7 @@ require DynaLoader;
 
 *is_FH = \&is_arg_ok;
 
-$FileHandle::Fmode::VERSION = 0.10;
+$FileHandle::Fmode::VERSION = 0.11;
 
 @FileHandle::Fmode::ISA = qw(Exporter DynaLoader);
 
@@ -145,6 +145,12 @@ FileHandle::Fmode - determine whether a filehandle is opened for reading, writin
  check by passing the argument to is_FH(). Or you could wrap the
  function call in an eval{} block. 
 
+ Note that it may be possible that a filehandle opened for writing may
+ become unwritable - if (eg) the disk becomes full. I don't know how 
+ the below functions would be affected by such an event. I suspect
+ that they would be unaware of the change ... but I haven't actually
+ checked.
+
  $bool = is_R($fh);
  $bool = is_R(\*FH);
   Returns true if the filehandle is readable.
@@ -209,6 +215,7 @@ FileHandle::Fmode - determine whether a filehandle is opened for reading, writin
 
  This program is free software; you may redistribute it and/or 
  modify it under the same terms as Perl itself.
+ Copyright 2006-2008, Sisyphus
 
 =head1 AUTHOR
 
