@@ -1,3 +1,5 @@
+0.12 - Apply patch from Diab Jerius. (Ticket #79983)
+
 0.11 - Add copyright notice to the LICENSE section of the pod.
 
 0.10 - Add is_FH() - which is just a (more intuitively named) alias for

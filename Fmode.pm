@@ -7,7 +7,8 @@ require DynaLoader;
 
 *is_FH = \&is_arg_ok;
 
-$FileHandle::Fmode::VERSION = 0.11;
+our $VERSION = '0.12';
+$VERSION = eval $VERSION;
 
 @FileHandle::Fmode::ISA = qw(Exporter DynaLoader);
 
@@ -16,15 +17,15 @@ $FileHandle::Fmode::VERSION = 0.11;
 %FileHandle::Fmode::EXPORT_TAGS = (all => [qw
     (is_R is_W is_RO is_WO is_RW is_arg_ok is_A is_FH)]);
 
-bootstrap FileHandle::Fmode $FileHandle::Fmode::VERSION;
+bootstrap FileHandle::Fmode $VERSION;
 
 my $is_win32 = $^O =~ /mswin32/i ? 1 : 0;
 
 sub is_arg_ok {
-    eval{$_ = fileno($_[0]);};
+    my $fileno = eval{fileno($_[0])};
     if($@) {return 0}
-    if(defined(fileno($_[0]))) {
-      if(fileno($_[0]) == -1) {
+    if(defined($fileno)) {
+      if($fileno == -1) {
         if($] < 5.007) {return 0}
         return 1;
       }
@@ -34,8 +35,9 @@ sub is_arg_ok {
 }
 
 sub is_RO {
-    if(!defined(fileno($_[0]))) {die "Not an open filehandle"}
-    if(fileno($_[0]) == -1) {
+    my $fileno = fileno($_[0]);
+    if(!defined( $fileno)) {die "Not an open filehandle"}
+    if( $fileno == -1) {
       if($] < 5.007) {die "Illegal fileno() return"}
       if(perliol_readable($_[0]) && !perliol_writable($_[0])) {return 1}
       return 0;
@@ -50,8 +52,9 @@ sub is_RO {
 }
 
 sub is_WO {
-    if(!defined(fileno($_[0]))) {die "Not an open filehandle"}
-    if(fileno($_[0]) == -1) {
+    my $fileno = fileno($_[0]);
+    if(!defined( $fileno)) {die "Not an open filehandle"}
+    if( $fileno == -1) {
       if($] < 5.007) {die "Illegal fileno() return"}
       if(!perliol_readable($_[0]) && perliol_writable($_[0])) {return 1}
       return 0;
@@ -76,8 +79,9 @@ sub is_R {
 }
 
 sub is_RW {
-    if(!defined(fileno($_[0]))) {die "Not an open filehandle"}
-    if(fileno($_[0]) == -1) {
+    my $fileno = fileno($_[0]);
+    if(!defined( $fileno)) {die "Not an open filehandle"}
+    if( $fileno == -1) {
       if($] < 5.007) {die "Illegal fileno() return"}
       if(perliol_readable($_[0]) && perliol_writable($_[0])) {return 1}
       return 0;
@@ -92,8 +96,9 @@ sub is_RW {
 }
 
 sub is_A {
-    if(!defined(fileno($_[0]))) {die "Not an open filehandle"}
-    if(fileno($_[0]) == -1) {
+    my $fileno = fileno($_[0]);
+    if(!defined( $fileno)) {die "Not an open filehandle"}
+    if( $fileno == -1) {
       if($] < 5.007) {die "Illegal fileno() return"}
       return is_appendable($_[0]);
     }
@@ -215,7 +220,7 @@ FileHandle::Fmode - determine whether a filehandle is opened for reading, writin
 
  This program is free software; you may redistribute it and/or 
  modify it under the same terms as Perl itself.
- Copyright 2006-2008, Sisyphus
+ Copyright 2006-2008, 2009, 2010, 2012 Sisyphus
 
 =head1 AUTHOR
 
