@@ -1,5 +1,5 @@
 package FileHandle::Fmode;
-use Fcntl qw(O_WRONLY O_RDWR O_APPEND F_GETFL);
+use Fcntl qw(O_ACCMODE O_RDONLY O_WRONLY O_RDWR O_APPEND F_GETFL);
 use strict;
 
 require Exporter;
@@ -7,7 +7,7 @@ require DynaLoader;
 
 *is_FH = \&is_arg_ok;
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 $VERSION = eval $VERSION;
 
 @FileHandle::Fmode::ISA = qw(Exporter DynaLoader);
@@ -47,7 +47,7 @@ sub is_RO {
       return 0;
     }
     my $fmode = fcntl($_[0], F_GETFL, my $slush = 0);
-    if(defined($fmode) && !($fmode & O_WRONLY) && !($fmode & O_RDWR)) {return 1}
+    if(defined($fmode) && ($fmode & O_ACCMODE) == O_RDONLY) {return 1}
     return 0;
 }
 
@@ -64,7 +64,7 @@ sub is_WO {
       return 0;
     }
     my $fmode = fcntl($_[0], F_GETFL, my $slush = 0);
-    if($fmode & O_WRONLY) {return 1}
+    if(defined($fmode) && ($fmode & O_ACCMODE) == O_WRONLY) {return 1}
     return 0;
 }
 
@@ -91,7 +91,7 @@ sub is_RW {
       return 0;
     }
     my $fmode = fcntl($_[0], F_GETFL, my $slush = 0);
-    if($fmode & O_RDWR) {return 1}
+    if(defined($fmode) && ($fmode & O_ACCMODE) == O_RDWR) {return 1}
     return 0;
 }
 
