@@ -1,3 +1,6 @@
+0.14 - Add metadata to Makefile.PL.
+     - Define PERL_NO_GET_CONTEXT
+
 0.13 - Apply patch from Xavier Guimard. (Ticket 80607)
 
 0.12 - Apply patch from Diab Jerius. (Ticket #79983)
@@ -23,7 +26,7 @@
        or
        2) the received argument is a filehandle connected to a memory object.
 
-     - Add the is_arg_ok() function. 
+     - Add the is_arg_ok() function.
 
 0.02 - Minor changes for compatibility with pre-5.6 versions of perl, and some tidying up.
 

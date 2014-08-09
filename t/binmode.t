@@ -203,23 +203,23 @@ else {print "ok 31 - skipped, pre-5.6.1 Win32 perl\n"}
 close(RW) or die "Can't close temp.txt after opening for reading/writing: $!";
 unless($] < 5.006) {close($rw) or die "Can't close temp2.txt after opening for reading/writing: $!";}
 
-eval {is_R($undef)}; 
+eval {is_R($undef)};
 if($@ && !is_arg_ok($undef)){print "ok 32\n"}
 else {print "not ok 32\n"}
 
-eval {is_RO($undef)}; 
+eval {is_RO($undef)};
 if($@){print "ok 33\n"}
 else {print "not ok 33\n"}
 
-eval {is_W($undef)}; 
+eval {is_W($undef)};
 if($@){print "ok 34\n"}
 else {print "not ok 34\n"}
 
-eval {is_WO($undef)}; 
+eval {is_WO($undef)};
 if($@){print "ok 35\n"}
 else {print "not ok 35\n"}
 
-eval {is_RW($undef)}; 
+eval {is_RW($undef)};
 if($@){print "ok 36\n"}
 else {print "not ok 36\n"}
 
@@ -322,7 +322,7 @@ eval{FileHandle::Fmode::perliol_readable(\*RD);};
 
 if($] < 5.007) {
   if($@ =~ /perliol_readable/) {print "ok 50\n"}
-  else {print "not ok 50\n"} 
+  else {print "not ok 50\n"}
 }
 else {
   if($@) {print "not ok 50\n"}
@@ -337,7 +337,7 @@ eval{FileHandle::Fmode::perliol_writable(\*WR);};
 
 if($] < 5.007) {
   if($@ =~ /perliol_writable/) {print "ok 51\n"}
-  else {print "not ok 51\n"} 
+  else {print "not ok 51\n"}
 }
 else {
   if($@) {print "not ok 51\n"}

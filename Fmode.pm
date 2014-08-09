@@ -7,8 +7,8 @@ require DynaLoader;
 
 *is_FH = \&is_arg_ok;
 
-our $VERSION = '0.13';
-$VERSION = eval $VERSION;
+our $VERSION = '0.14';
+#$VERSION = eval $VERSION;
 
 @FileHandle::Fmode::ISA = qw(Exporter DynaLoader);
 
@@ -143,15 +143,15 @@ FileHandle::Fmode - determine whether a filehandle is opened for reading, writin
   Returns 1 if its argument is an open filehandle.
   Returns 0 if its argument is something other than an open filehandle.
 
- Arguments to the following functions  must be open filehandles. If 
- any of those functions receive an argument that is not an open 
+ Arguments to the following functions  must be open filehandles. If
+ any of those functions receive an argument that is not an open
  filehandle then the function dies with an appropriate error message.
  To ensure that your script won't suffer such a death, you could first
  check by passing the argument to is_FH(). Or you could wrap the
- function call in an eval{} block. 
+ function call in an eval{} block.
 
  Note that it may be possible that a filehandle opened for writing may
- become unwritable - if (eg) the disk becomes full. I don't know how 
+ become unwritable - if (eg) the disk becomes full. I don't know how
  the below functions would be affected by such an event. I suspect
  that they would be unaware of the change ... but I haven't actually
  checked.
@@ -186,7 +186,7 @@ FileHandle::Fmode - determine whether a filehandle is opened for reading, writin
 
   Returns true if the filehandle was opened for appending.
   Else returns false.
-  Not currently implemented on Win32 with pre-5.6.1 versions of perl (and  
+  Not currently implemented on Win32 with pre-5.6.1 versions of perl (and
   dies with appropriate error message if called on such a platform).
 
 
@@ -195,7 +195,7 @@ FileHandle::Fmode - determine whether a filehandle is opened for reading, writin
 
  Inspired (hmmm ... is that the right word ?) by an idea from BrowserUK
  posted on PerlMonks in response to a question from dragonchild. Win32
- code (including XS code) provided by BrowserUK. Zaxo presented the idea 
+ code (including XS code) provided by BrowserUK. Zaxo presented the idea
  of using fcntl() in an earlier PerlMonks thread.
 
  Thanks to dragonchild and BrowserUK for steering this module in
@@ -218,7 +218,7 @@ FileHandle::Fmode - determine whether a filehandle is opened for reading, writin
 =head1 LICENSE
 
 
- This program is free software; you may redistribute it and/or 
+ This program is free software; you may redistribute it and/or
  modify it under the same terms as Perl itself.
  Copyright 2006-2008, 2009, 2010, 2012 Sisyphus
 
